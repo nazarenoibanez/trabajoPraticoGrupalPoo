@@ -22,9 +22,11 @@ public enum MarcaG
         Chicle,
         Regaliz
     }
-    public class Golosina: Producto
+    public class Golosina : Producto
     {
-        public Golosina(TipoGolosina tipo, MarcaG marca): base(6, "Golosina", 500, DateTime.Now, 50, DateTime.Now.AddDays(180))
+        // Updated constructor to call the base class constructor
+        public Golosina(int codigo, string nombre, double precioBase, DateTime fechaIngreso, int stock, DateTime fechaVto, TipoGolosina tipo, MarcaG marca)
+            : base(codigo, nombre, precioBase, fechaIngreso, stock, fechaVto)
         {
             Tipo = tipo;
             Marca = marca;
@@ -32,8 +34,6 @@ public enum MarcaG
 
         public TipoGolosina Tipo { get; set; }
         public MarcaG Marca { get; set; }
-        
-        
 
         public override double CalcularPrecioFinal()
         {
