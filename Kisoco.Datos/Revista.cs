@@ -15,7 +15,7 @@ namespace Kisoco.Datos
         RollingStone,
         ScientificAmerican
     }
-    internal class Revista:Producto
+    public class Revista:Producto
     {
         public Revista(int codigo, string nombre, double precioBase, DateTime fechaIngreso, int stock, DateTime fechaVto, MarcaR marca, string? edicion, bool tienePoster)
             :base(codigo, nombre, precioBase, fechaIngreso, stock, fechaVto)
