@@ -1,4 +1,6 @@
-﻿namespace Kisoco.Datos
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Kisoco.Datos
 {
     public enum MarcaB
     {
@@ -9,43 +11,55 @@
         AguaMineral,
         JugoNatural
     }
-    public class Bebida
+    public class Bebida: Producto
     {
-        public Bebida(string nombre, decimal precioBase, DateTime fechaIngreso, int stock, MarcaB marca, DateTime fechaVto, decimal metodoVirtual, int litros, bool esAlcoholica, decimal precioFinal)
+        public Bebida(MarcaB marca, int litros, bool esAlcoholica):base(6, "Bebida", 1000, DateTime.Now, 10, DateTime.Now.AddDays(180))
         {
-            Nombre = nombre;
-            PrecioBase = precioBase;
-            FechaIngreso = fechaIngreso;
-            Stock = stock;
             this.marca = marca;
-            MetodoVirtual= metodoVirtual;
-            FechaVto = fechaVto;
             Litros = litros;
             EsAlcoholica = esAlcoholica;
-            PrecioFinal = precioFinal;
         }
 
-        //falta el codigo virtual
-        public string Nombre { get; set; } = null!;
-        public decimal PrecioBase { get; set; }
-        public DateTime FechaIngreso { get; set; }
-        public int Stock { get; set; }
         public MarcaB marca { get; set; }
-        public DateTime FechaVto { get; set; }
-        public decimal MetodoVirtual  { get; set; }
+  
         public int Litros { get; set; }
         public bool EsAlcoholica { get; set; }
-        public decimal PrecioFinal { get; set; }
 
-        public decimal CalcularPrecioFinal()
+        
+        public override double CalcularPrecioFinal()
         {
             if (EsAlcoholica)
             {
-               return PrecioBase+200+(Litros*100)+500;
+                return (double)PrecioBase + 200 + (Litros * 100) + 500;
             }
             else
             {
-                return PrecioBase + 200 + (Litros * 100);
+                return (double)PrecioBase + 200 + (Litros * 100);
+            }
+        }
+
+        public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (Codigo == 6)
+            {
+                yield return new ValidationResult("El código 6 está reservado para otro producto.");
+            }
+            if (PrecioBase < 0)
+            {
+                yield return new ValidationResult("El precio base no puede ser negativo.");
+            }
+            if (stock < 0)
+            {
+                yield return new ValidationResult("El Stock no puede ser negativo");
+            }
+            if (Nombre is not null)
+            {
+                yield return new ValidationResult("El nombre no puede ser nulo o vacío.");
+            }
+            DateTime fechaActual = DateTime.Now.Date;
+            if (fechaVto.Date < fechaActual || fechaVto.Date > fechaActual.AddDays(180))
+            {
+                yield return new ValidationResult("La fecha de vencimiento debe ser igual o posterior a la actual y no superar los 180 días desde hoy.");
             }
         }
     }
