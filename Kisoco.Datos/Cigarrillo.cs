@@ -15,9 +15,10 @@ namespace Kisoco.Datos
         PallMall,
         Chesterfield
     }
-    internal class Cigarrillo : Producto
+    public class Cigarrillo : Producto
     {
-        public Cigarrillo(MarcaC marca, bool esImportado): base(6, "Cigarrillo", 500, DateTime.Now, 20, DateTime.Now.AddDays(180))
+        public Cigarrillo(int codigo, string nombre, double precioBase, DateTime fechaIngreso, int stock, DateTime fechaVto, MarcaC marca, bool esImportado)
+            : base(codigo, nombre, precioBase, fechaIngreso, stock, fechaVto)
         {
             this.marca = marca;
             EsImportado = esImportado;

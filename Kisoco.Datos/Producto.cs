@@ -21,15 +21,15 @@ namespace Kisoco.Datos
             }
             if (precioBase < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(precioBase), "El precio base no puede ser negativo.");
+                throw new ArgumentException("El precio base no puede ser negativo.", nameof(precioBase));
             }
             if (stock < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(stock), "El stock no puede ser negativo.");
+                throw new ArgumentException("El stock no puede ser negativo.", nameof(stock));
             }
             if (fechaVto < DateTime.Now.Date || fechaVto > DateTime.Now.AddDays(180).Date)
             {
-                throw new ArgumentOutOfRangeException(nameof(fechaVto), "La fecha de vencimiento debe estar entre hoy y 180 días a partir de hoy.");
+                throw new ArgumentException("La fecha de vencimiento debe estar entre hoy y 180 días a partir de hoy.",nameof(fechaVto));
             }
             Codigo = codigo;
             Nombre = nombre;
