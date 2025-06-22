@@ -13,7 +13,8 @@ namespace Kisoco.Datos
     }
     public class Bebida: Producto
     {
-        public Bebida(MarcaB marca, int litros, bool esAlcoholica):base(6, "Bebida", 1000, DateTime.Now, 10, DateTime.Now.AddDays(180))
+        public Bebida(int codigo, string nombre, double precioBase, DateTime fechaIngreso, int stock, DateTime fechaVto, MarcaB marca, int litros, bool esAlcoholica)
+            :base(codigo, nombre, precioBase, fechaIngreso, stock, fechaVto)
         {
             this.marca = marca;
             Litros = litros;
