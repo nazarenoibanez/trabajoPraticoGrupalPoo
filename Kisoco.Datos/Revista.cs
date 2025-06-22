@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,42 +15,55 @@ namespace Kisoco.Datos
         RollingStone,
         ScientificAmerican
     }
-    internal class Revista
+    internal class Revista:Producto
     {
-        public Revista(string nombre, decimal precioBase, DateTime fechaIngreso, int stock, MarcaR marca, DateTime fechaVto, decimal metodoVirtual, string? edicion, bool tienePoster, decimal precioFinal)
+        public Revista(MarcaR marca, string? edicion, bool tienePoster):base(6, "Revista", 800, DateTime.Now, 30, DateTime.Now.AddDays(180))
         {
-            Nombre = nombre;
-            PrecioBase = precioBase;
-            FechaIngreso = fechaIngreso;
-            Stock = stock;
             this.marca = marca;
-            FechaVto = fechaVto;
-            MetodoVirtual = metodoVirtual;
             Edicion = edicion;
             TienePoster = tienePoster;
-            PrecioFinal = precioFinal;
         }
+        
 
-        //falta el codigo virtual
-        public string Nombre { get; set; } = null!;
-        public decimal PrecioBase { get; set; }
-        public DateTime FechaIngreso { get; set; }
-        public int Stock { get; set; }
         public MarcaR marca { get; set; }
-        public DateTime FechaVto { get; set; }
-        public decimal MetodoVirtual { get; set; }
         public string? Edicion { get; set; }
         public bool TienePoster { get; set; }
-        public decimal PrecioFinal { get; set; }
-        public decimal CalcularPrecioFinal()
+    
+
+        public override double CalcularPrecioFinal()
         {
             if (TienePoster)
             {
-                return PrecioBase +300;
+                return (double)PrecioBase + 300;
             }
             else
             {
-                return PrecioBase;
+                return (double)PrecioBase;
+            }
+        }
+
+        public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (Codigo == 6)
+            {
+                yield return new ValidationResult("El código 6 está reservado para otro producto.");
+            }
+            if (PrecioBase < 0)
+            {
+                yield return new ValidationResult("El precio base no puede ser negativo.");
+            }
+            if (stock < 0)
+            {
+                yield return new ValidationResult("El Stock no puede ser negativo");
+            }
+            if (Nombre is not null)
+            {
+                yield return new ValidationResult("El nombre no puede ser nulo o vacío.");
+            }
+            DateTime fechaActual = DateTime.Now.Date;
+            if (fechaVto.Date < fechaActual || fechaVto.Date > fechaActual.AddDays(180))
+            {
+                yield return new ValidationResult("La fecha de vencimiento debe ser igual o posterior a la actual y no superar los 180 días desde hoy.");
             }
         }
     }
